@@ -1,2 +1,2 @@
 # MicroLab2025
-Basi Project designed for lerning purposes
+Basic RTL Project designed for laerning purposes
