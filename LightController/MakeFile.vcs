@@ -1,0 +1,17 @@
+RUN ?= tb_final_proj
+SRC_DIR ?= $(CURDIR)/Light_controller
+TB_FILE ?= $(SRC_DIR)/$(RUN).sv
+RTL_FILE ?= $(SRC_DIR)/final_proj.v
+
+.PHONY: all sim run clean
+
+all: sim
+
+sim:
+	vcs -sverilog -timescale=1ns/1ps $(TB_FILE) $(RTL_FILE) -o simv
+
+run: sim
+	./simv
+
+clean:
+	rm -rf simv* csrc *.vcd *.log
