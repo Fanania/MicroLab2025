@@ -61,10 +61,6 @@ module TIMER_sec #(parameter integer DURATION = 10)   // durata fixa în secunde
   output reg [15:0] left
 );
 
-  reg running;
-
-  assign Active = running;
-
   always @(posedge clk or posedge rst) begin
     if (rst) begin
       left    <= Load_sec;
@@ -73,9 +69,9 @@ module TIMER_sec #(parameter integer DURATION = 10)   // durata fixa în secunde
       if (tick) begin
         if (left > 1) begin
           left <= left - 1;
-          Done <= left;
+          Done <= 1'b0;
         end else begin
-          left    <= 0;
+          left    <= 16'h0;
           Done    <= 1'b1;   // expirat
         end
       end
@@ -107,6 +103,7 @@ module Traffic_FSM (
     reg [2:0] state_in;
     reg [15:0] left;
     wire rst_timer;
+    wire Done;
     // Timer simplificat
     TIMER_sec timer_inst (
         .clk(clk),
@@ -119,6 +116,7 @@ module Traffic_FSM (
     assign rst_timer = state_in != state_out;
     // Actualizare combinationala a state=ului
     always @* begin
+      state_in = state_out; // default!
       case (state_out)  // ultima valoare actualizata
         NS_GREEN  :if (Done)  state_in = NS_YELLOW;     // De fiecare data cand e verde -> urmeaza galben
         NS_YELLOW :if (Done)  state_in = EW_GREEN;      // De fiecare data cand e galben -> urmeaza rosu -> deci vered pentru directia opusa
@@ -142,7 +140,7 @@ module Traffic_FSM (
     // Structura FSM -> actaulizare constanta
     always @(posedge clk) begin
       if (rst) begin
-        state_out[2:0] <= 2'h0;
+        state_out[2:0] <= 3'h0;
       end else begin
         state_out[2:0] <= state_in[2:0];      
       end
