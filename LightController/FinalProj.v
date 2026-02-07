@@ -126,7 +126,7 @@ module Traffic_FSM (
       endcase
     end
 
-    always @(*) begin
+    always @* begin
       case (state_out)
           NS_GREEN :  duration_val = T_GREEN;
           NS_YELLOW: duration_val = T_YELLOW;
