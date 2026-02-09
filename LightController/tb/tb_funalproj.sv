@@ -34,7 +34,6 @@ module tb_final_proj;
     .CntrlLight(CntrlLight)
   );
 
-  // Generate a 1-cycle tick every 10 clock cycles (fast sim)
   int tick_cnt;
   always_ff @(posedge clk) begin
     if (rst) begin
